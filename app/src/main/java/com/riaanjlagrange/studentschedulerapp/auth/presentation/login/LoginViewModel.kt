@@ -1,10 +1,10 @@
-package com.riaanjlagrange.studentschedulerapp.auth.presentation.lecturer.login
+package com.riaanjlagrange.studentschedulerapp.auth.presentation.login
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-class StudentLoginViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
 
     // set state to login state
     var state = mutableStateOf(LoginState())

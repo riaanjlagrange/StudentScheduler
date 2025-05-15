@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.auth.presentation.lecturer.login
+package com.riaanjlagrange.studentschedulerapp.auth.presentation.login
 
 data class LoginState(
     val email: String = "",

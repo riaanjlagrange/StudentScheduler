@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.auth.presentation.lecturer.login
+package com.riaanjlagrange.studentschedulerapp.auth.presentation.login
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -26,9 +26,9 @@ import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun StudentLoginScreen(
+fun LoginScreen(
     navController: NavController,
-    viewModel: StudentLoginViewModel = viewModel()
+    viewModel: LoginViewModel = viewModel()
 ) {
     val state = viewModel.state
     val context = LocalContext.current
@@ -39,7 +39,7 @@ fun StudentLoginScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Student Login", fontSize = 22.sp)
+        Text("Login", fontSize = 22.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -84,6 +84,6 @@ fun StudentLoginScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun StudentLoginScreenPreview() {
-    StudentLoginScreen(navController = rememberNavController())
+fun LoginScreenPreview() {
+    LoginScreen(navController = rememberNavController())
 }

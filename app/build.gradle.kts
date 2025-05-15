@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services") // ✅ Firebase plugin
+    id("com.google.gms.google-services") // Firebase plugin
 }
 
 android {
@@ -56,14 +56,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.navigation:navigation-compose:2.9.0")
-    implementation("androidx.compose.runtime:runtime-saveable")
-    implementation("androidx.compose.material3:material3:1.3.2")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.5.0")
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.runtime.saveable)
+    implementation(libs.material3)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.ui.text.google.fonts)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
 }
 
 apply(plugin = "com.google.gms.google-services")
