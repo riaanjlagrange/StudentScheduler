@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">StudentSchedulerApp</string>
+    <string name="default_text">Some default text</string>
+    <string name="default_header">Header</string>
+    <string name="default_button">Button</string>
+    <string name="default_error">Something has gone wrong!</string>
+    <string name="book_now">Book Now</string>
+    <string name="booking_success">Appointment Booked!</string>
+    <string name="booking_failure">Failed to Book</string>
 </resources>

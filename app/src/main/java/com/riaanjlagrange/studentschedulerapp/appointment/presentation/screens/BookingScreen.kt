@@ -1,2 +1,0 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.presentation.screens
-

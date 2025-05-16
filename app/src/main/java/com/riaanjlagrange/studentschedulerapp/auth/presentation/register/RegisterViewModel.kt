@@ -1,47 +1,54 @@
 package com.riaanjlagrange.studentschedulerapp.auth.presentation.register
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class RegisterViewModel : ViewModel() {
     // set state to register state
-    var state = mutableStateOf(RegisterState())
+    var state by mutableStateOf(RegisterState())
         private set
 
     // change email state on change
     fun onEmailChange(email: String) {
-        state.value = state.value.copy(email = email)
+        state = state.copy(email = email)
     }
 
     // change password state on change
     fun onPasswordChange(pass: String) {
-        state.value = state.value.copy(password = pass)
+        state = state.copy(password = pass)
     }
 
     // change confirm password state on change
     fun onConfirmPasswordChange(confirm: String) {
-        state.value = state.value.copy(confirmPassword = confirm)
+        state = state.copy(confirmPassword = confirm)
     }
 
     // register with email and password
     fun register(onResult: (Boolean, String?) -> Unit) {
-        if (state.value.password !== state.value.confirmPassword) {
-            state.value = state.value.copy(error = "Passwords do not match")
+        if (state.password !== state.confirmPassword) {
+            state = state.copy(error = "Passwords do not match")
             onResult(false, "Passwords do not match")
             return
         }
 
-        state.value = state.value.copy(isLoading = true, error = null)
+        // set isLoading to true and error to null
+        state = state.copy(isLoading = true, error = null)
 
         FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword(state.value.email, state.value.password)
+            // try to create the user with email and password
+            .createUserWithEmailAndPassword(state.email, state.password)
+            // check if registration was successfull or not
             .addOnCompleteListener { task ->
-                state.value = state.value.copy(isLoading = false)
+                state = state.copy(isLoading = false)
                 if (task.isSuccessful) {
+                    // set result to true
                     onResult(true, null)
                 } else {
-                    state.value = state.value.copy(error = task.exception?.message)
+                    // set error and loading state if there is an error
+                    state = state.copy(error = task.exception?.message)
                     onResult(false, task.exception?.message)
                 }
             }
