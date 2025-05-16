@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.utils.components
+package com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Button

@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.utils.components
+package com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components
 
 import android.app.DatePickerDialog
 import androidx.compose.material3.Button

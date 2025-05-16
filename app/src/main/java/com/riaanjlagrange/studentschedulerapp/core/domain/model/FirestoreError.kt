@@ -1,11 +1,11 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.domain.model
+package com.riaanjlagrange.studentschedulerapp.core.domain.model
 
-data class FirebaseError(
-    val error: ApiError,
+data class FirestoreError(
+    val error: FirestoreApiError,
     val t: Throwable? = null
 )
 
-enum class ApiError(val message: String) {
+enum class FirestoreApiError(val message: String) {
     PermissionError("Permission Denied"),
     ServiceUnavailableError("Service Currently Unavailable"),
     NotFoundError("Document Not Found"),

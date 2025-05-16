@@ -9,7 +9,7 @@ import arrow.core.Either
 import com.google.firebase.auth.FirebaseAuth
 import com.riaanjlagrange.studentschedulerapp.appointment.data.repository.AppointmentRepositoryImpl
 import com.riaanjlagrange.studentschedulerapp.appointment.domain.model.Appointment
-import com.riaanjlagrange.studentschedulerapp.appointment.domain.model.FirebaseError
+import com.riaanjlagrange.studentschedulerapp.core.domain.model.FirestoreError
 import kotlinx.coroutines.launch
 
 class ViewBookingsViewModel : ViewModel() {
@@ -25,7 +25,7 @@ class ViewBookingsViewModel : ViewModel() {
         state = state.copy(isLoading = true)
 
         viewModelScope.launch {
-            val appointmentsResponse: Either<FirebaseError, List<Appointment>> = repo.getAppointments(userId)
+            val appointmentsResponse: Either<FirestoreError, List<Appointment>> = repo.getAppointments(userId)
 
             state = when (appointmentsResponse) {
                 is Either.Right -> state.copy(

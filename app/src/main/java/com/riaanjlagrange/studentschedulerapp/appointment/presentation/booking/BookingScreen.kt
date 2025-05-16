@@ -20,8 +20,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.riaanjlagrange.studentschedulerapp.R
-import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.utils.components.DatePickerButton
-import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.utils.components.TimeSlotDropdown
+import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.DatePickerButton
+import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.TimeSlotDropdown
 import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 

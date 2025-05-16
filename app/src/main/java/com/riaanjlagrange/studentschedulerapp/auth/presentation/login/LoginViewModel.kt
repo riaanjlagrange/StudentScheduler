@@ -4,42 +4,40 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.viewModelScope
+import com.riaanjlagrange.studentschedulerapp.auth.data.repository.AuthRepositoryImpl
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.AuthUser
+import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel: ViewModel() {
+    private val repo = AuthRepositoryImpl()
 
-    // set state to login state
     var state by mutableStateOf(LoginViewState())
         private set
 
-    // change email state on change
-    fun onEmailChange(newEmail: String) {
-        state = state.copy(email = newEmail)
+    fun onEmailChange(email: String) {
+        state = state.copy(email = email)
     }
 
-    // change password state on change
-    fun onPasswordChange(newPassword: String) {
-        state = state.copy(password = newPassword)
+    fun onPasswordChange(password: String) {
+        state = state.copy(password = password)
     }
 
-    // login with email and password
-    fun login(onResult: (Boolean, String?) -> Unit) {
-        // set isLoading to true, and error to null
+    fun login(onSuccess: (AuthUser) -> Unit) {
         state = state.copy(isLoading = true, error = null)
 
-        FirebaseAuth.getInstance()
-            // try to sign in with email and password
-            .signInWithEmailAndPassword(state.email, state.password)
-            // check if login was successful or not
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // set the result to true
-                    onResult(true, null)
-                } else {
-                    // set error and loading state if there is an error
-                    state = state.copy(error = task.exception?.message, isLoading = false)
-                    onResult(false, task.exception?.message)
+        viewModelScope.launch {
+            val result = repo.login(state.email, state.password)
+
+            result.fold(
+                ifLeft = { error ->
+                    state = state.copy(isLoading = false, error = error.error.message)
+                },
+                ifRight = { user ->
+                    state = state.copy(isLoading = false, error = null)
+                    onSuccess(user)
                 }
-            }
+            )
+        }
     }
 }

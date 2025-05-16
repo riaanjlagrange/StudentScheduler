@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthButton
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthTextField
@@ -23,6 +24,7 @@ import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 @Composable
 fun LoginScreen(
     navController: NavController,
+    selectedRole: UserRole,
     viewModel: LoginViewModel = viewModel()
 ) {
     // get state from LoginViewModel's state
@@ -51,13 +53,16 @@ fun LoginScreen(
         // set auth button
         AuthButton(
             onClick = {
-                // set onResult to success or error
-                viewModel.login { success, error ->
-                    if (success) {
-                        // navigate to route after success
-                        navController.navigate("booking") // need to change to real route
-                    } else {
-                        Toast.makeText(context, error ?: "Login failed", Toast.LENGTH_SHORT).show()
+                viewModel.login { user ->
+                    if (user.role != selectedRole) {
+                        Toast.makeText(context, "Account Not Registered as Lecturer", Toast.LENGTH_LONG).show()
+                        return@login
+                    }
+
+                    Toast.makeText(context, "Welcome ${user.role.name}", Toast.LENGTH_SHORT).show()
+                    when (user.role) {
+                        UserRole.Student -> navController.navigate("booking")
+                        UserRole.Lecturer -> navController.navigate("lecturer_dashboard")
                     }
                 }
             },
@@ -76,5 +81,9 @@ fun LoginScreen(
 )
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController())
+    LoginScreen(
+        navController = rememberNavController(),
+        selectedRole = TODO(),
+        viewModel = TODO()
+    )
 }

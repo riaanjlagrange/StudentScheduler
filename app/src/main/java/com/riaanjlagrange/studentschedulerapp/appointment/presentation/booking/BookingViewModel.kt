@@ -1,14 +1,13 @@
 package com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.*
 import com.google.firebase.auth.FirebaseAuth
 import com.riaanjlagrange.studentschedulerapp.appointment.data.repository.AppointmentRepositoryImpl
-import com.riaanjlagrange.studentschedulerapp.appointment.domain.model.FirebaseError
 import kotlinx.coroutines.launch
 import arrow.core.Either
+import com.riaanjlagrange.studentschedulerapp.core.domain.model.FirestoreError
 
 class BookingViewModel : ViewModel() {
     private val repo = AppointmentRepositoryImpl()
@@ -23,30 +22,33 @@ class BookingViewModel : ViewModel() {
     fun updateTime(time: String) {
         state = state.copy(appointment = state.appointment.copy(time = time))
     }
-
     fun book(onResult: (Boolean) -> Unit) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        // Attach user ID to appointment
         val updatedAppointment = state.appointment.copy(userId = userId)
 
         state = state.copy(isLoading = true, error = null)
 
         viewModelScope.launch {
-            val response: Either<FirebaseError, String> = repo.bookAppointment(updatedAppointment)
+            val response: Either<FirestoreError, String> = repo.bookAppointment(updatedAppointment)
 
-            state = when (response) {
-                is Either.Right -> {
-                    state.copy(isLoading = false)
+            response.fold(
+                ifLeft = { error ->
+                    state = state.copy(
+                        isLoading = false,
+                        error = error.error.message
+                    )
+                    onResult(false)
+                },
+                ifRight = {
+                    state = state.copy(
+                        isLoading = false,
+                        error = null
+                    )
+                    onResult(true)
                 }
-
-                is Either.Left -> state.copy(
-                    isLoading = false,
-                    error = response.value.error.message
-                )
-            }
-
-            onResult(response.isRight())
+            )
         }
     }
+
 }

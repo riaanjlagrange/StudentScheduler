@@ -55,14 +55,11 @@ fun RegisterScreen(
         // set auth button
         AuthButton(
             onClick = {
-                // set onResult to success or error
-                viewModel.register { success, error ->
-                    if (success) {
-                        // navigate to route after success
-                        navController.navigate("booking") // need to change to real route
-                    } else {
-                        Toast.makeText(context, error ?: "Registration failed", Toast.LENGTH_SHORT).show()
-                    }
+                viewModel.register {
+                    Toast
+                        .makeText(context, "Registration Successful!", Toast.LENGTH_SHORT)
+                        .show()
+                    navController.navigate("login")
                 }
             },
             isLoading = state.isLoading,

@@ -11,12 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.R
-import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.utils.components.BookingItem
+import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components.BookingItem
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 
 @Composable
 fun ViewBookingsScreen(
+    navController: NavController,
     viewModel: ViewBookingsViewModel = viewModel()
 ) {
     val state = viewModel.state
@@ -55,3 +57,5 @@ fun ViewBookingsScreen(
         }
     }
 }
+
+//TODO: add preview

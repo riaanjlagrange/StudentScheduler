@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.utils.components
+package com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

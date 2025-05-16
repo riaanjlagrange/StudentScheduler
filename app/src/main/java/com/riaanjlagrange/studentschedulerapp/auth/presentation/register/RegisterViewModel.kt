@@ -4,62 +4,56 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import android.util.Log
+import androidx.lifecycle.viewModelScope
+import com.riaanjlagrange.studentschedulerapp.auth.data.repository.AuthRepositoryImpl
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.AuthUser
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import kotlinx.coroutines.launch
 
-class RegisterViewModel : ViewModel() {
-    // set state to register state
+class RegisterViewModel: ViewModel() {
+    private var repo = AuthRepositoryImpl()
+
     var state by mutableStateOf(RegisterViewState())
         private set
 
-    // change email state on change
+
     fun onEmailChange(email: String) {
         state = state.copy(email = email)
     }
 
-    // change password state on change
-    fun onPasswordChange(pass: String) {
-        state = state.copy(password = pass)
+    fun onPasswordChange(password: String) {
+        state = state.copy(password= password)
     }
 
-    // change confirm password state on change
     fun onConfirmPasswordChange(confirm: String) {
         state = state.copy(confirmPassword = confirm)
     }
 
-    // register with email and password
-    fun register(
-        passwordInput: String = state.password,
-        confirmInput: String = state.confirmPassword,
-        onResult: (Boolean, String?) -> Unit
-    ) {
-        Log.d("REGISTER_DEBUG", "Password: '${state.password}'")
-        Log.d("REGISTER_DEBUG", "Confirm: '${state.confirmPassword}'")
+    fun onRoleSelected(role: UserRole) {
+        state = state.copy(role = role)
+    }
 
-        if (passwordInput.trim() != confirmInput.trim()) {
-            state = state.copy(error = "Passwords do not match")
-            Log.d("REGISTER_DEBUG", "why is ${state.password} not the same as ${state.confirmPassword}")
-            onResult(false, "Passwords do not match")
-            return
-        }
-
-        // set isLoading to true and error to null
+    fun register(onSuccess: (AuthUser) -> Unit) {
         state = state.copy(isLoading = true, error = null)
 
-        FirebaseAuth.getInstance()
-            // try to create the user with email and password
-            .createUserWithEmailAndPassword(state.email, state.password)
-            // check if registration was successful or not
-            .addOnCompleteListener { task ->
-                state = state.copy(isLoading = false)
-                if (task.isSuccessful) {
-                    // set result to true
-                    onResult(true, null)
-                } else {
-                    // set error and loading state if there is an error
-                    state = state.copy(error = task.exception?.message)
-                    onResult(false, task.exception?.message)
+        viewModelScope.launch {
+            val result = repo.register(
+                email = state.email,
+                password = state.password,
+                confirmPassword = state.confirmPassword,
+                role = state.role
+            )
+
+            result.fold(
+                ifLeft = { error ->
+                    state = state.copy(isLoading = false, error = error.error.message)
+                },
+                ifRight = { user ->
+                    state = state.copy(isLoading = false, error = null)
+                    onSuccess(user)
+                    // it should return the authUser to be used
                 }
-            }
+            )
+        }
     }
 }
