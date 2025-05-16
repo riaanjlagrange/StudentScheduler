@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 class LoginViewModel : ViewModel() {
 
     // set state to login state
-    var state by mutableStateOf(LoginState())
+    var state by mutableStateOf(LoginViewState())
         private set
 
     // change email state on change

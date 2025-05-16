@@ -7,4 +7,10 @@
     <string name="book_now">Book Now</string>
     <string name="booking_success">Appointment Booked!</string>
     <string name="booking_failure">Failed to Book</string>
+    <string name="default_uuid">default_uuid</string>
+    <string name="default_date">26/05/2026</string>
+    <string name="default_time">10:00 AM</string>
+    <string name="no_appointments_found">No appointments found.</string>
+    <string name="bookings_header">My Bookings</string>
+    <string name="register_button">Register</string>
 </resources>

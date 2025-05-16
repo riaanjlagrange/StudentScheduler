@@ -16,9 +16,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthButton
-import com.riaanjlagrange.studentschedulerapp.components.Header
+import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthTextField
-import com.riaanjlagrange.studentschedulerapp.components.ErrorText
+import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 
 @Composable
 fun LoginScreen(
@@ -44,7 +44,7 @@ fun LoginScreen(
         // set login text fields for email and password
         AuthTextField(state.email, viewModel::onEmailChange, "Email")
         Spacer(modifier = Modifier.height(8.dp))
-        AuthTextField(state.password, viewModel::onEmailChange, "Password", isPassword = true)
+        AuthTextField(state.password, viewModel::onPasswordChange, "Password", isPassword = true)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -55,7 +55,7 @@ fun LoginScreen(
                 viewModel.login { success, error ->
                     if (success) {
                         // navigate to route after success
-                        navController.navigate("dashboard") // need to change to real route
+                        navController.navigate("booking") // need to change to real route
                     } else {
                         Toast.makeText(context, error ?: "Login failed", Toast.LENGTH_SHORT).show()
                     }
@@ -65,11 +65,9 @@ fun LoginScreen(
             text = "Login"
         )
 
-
         // set error state if not null
         ErrorText(state.error)
     }
-
 }
 
 @Preview(

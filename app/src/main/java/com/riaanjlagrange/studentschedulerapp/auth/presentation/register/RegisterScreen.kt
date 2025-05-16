@@ -10,15 +10,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthButton
-import com.riaanjlagrange.studentschedulerapp.components.Header
+import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthTextField
-import com.riaanjlagrange.studentschedulerapp.components.ErrorText
+import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 
 @Composable
 fun RegisterScreen(
@@ -57,14 +59,14 @@ fun RegisterScreen(
                 viewModel.register { success, error ->
                     if (success) {
                         // navigate to route after success
-                        navController.navigate("dashboard") // need to change to real route
+                        navController.navigate("booking") // need to change to real route
                     } else {
-                        Toast.makeText(context, error ?: "Login failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, error ?: "Registration failed", Toast.LENGTH_SHORT).show()
                     }
                 }
             },
             isLoading = state.isLoading,
-            text = "Login"
+            text = stringResource(R.string.register_button)
         )
 
         // set error state if not null

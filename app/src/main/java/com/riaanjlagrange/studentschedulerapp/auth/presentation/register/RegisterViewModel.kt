@@ -5,10 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import android.util.Log
 
 class RegisterViewModel : ViewModel() {
     // set state to register state
-    var state by mutableStateOf(RegisterState())
+    var state by mutableStateOf(RegisterViewState())
         private set
 
     // change email state on change
@@ -27,9 +28,17 @@ class RegisterViewModel : ViewModel() {
     }
 
     // register with email and password
-    fun register(onResult: (Boolean, String?) -> Unit) {
-        if (state.password !== state.confirmPassword) {
+    fun register(
+        passwordInput: String = state.password,
+        confirmInput: String = state.confirmPassword,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        Log.d("REGISTER_DEBUG", "Password: '${state.password}'")
+        Log.d("REGISTER_DEBUG", "Confirm: '${state.confirmPassword}'")
+
+        if (passwordInput.trim() != confirmInput.trim()) {
             state = state.copy(error = "Passwords do not match")
+            Log.d("REGISTER_DEBUG", "why is ${state.password} not the same as ${state.confirmPassword}")
             onResult(false, "Passwords do not match")
             return
         }
@@ -40,7 +49,7 @@ class RegisterViewModel : ViewModel() {
         FirebaseAuth.getInstance()
             // try to create the user with email and password
             .createUserWithEmailAndPassword(state.email, state.password)
-            // check if registration was successfull or not
+            // check if registration was successful or not
             .addOnCompleteListener { task ->
                 state = state.copy(isLoading = false)
                 if (task.isSuccessful) {

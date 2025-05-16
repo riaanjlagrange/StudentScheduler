@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.data
+package com.riaanjlagrange.studentschedulerapp.appointment.domain.model
 
 import java.util.UUID
 

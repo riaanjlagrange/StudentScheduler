@@ -1,6 +1,6 @@
 package com.riaanjlagrange.studentschedulerapp.auth.presentation.register
 
-data class RegisterState (
+data class RegisterViewState (
     val email: String = "",
     val password: String = "",
     val confirmPassword: String = "",
