@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
@@ -38,8 +39,10 @@ fun LoginScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.Center
     ) {
+
         // set login header
-        Header("Login")
+        Header("${selectedRole.name.lowercase().replaceFirstChar { it.uppercase() }} Login")
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -72,6 +75,20 @@ fun LoginScreen(
 
         // set error state if not null
         ErrorText(state.error)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text("No account?")
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        AuthButton(
+            onClick = {
+                navController.navigate("register")
+            },
+            isLoading = false,
+            text = "Create New Account"
+        )
     }
 }
 

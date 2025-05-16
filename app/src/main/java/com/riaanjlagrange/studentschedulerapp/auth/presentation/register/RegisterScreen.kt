@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -49,6 +51,10 @@ fun RegisterScreen(
         AuthTextField(state.password, viewModel::onPasswordChange, "Password", isPassword = true)
         Spacer(modifier = Modifier.height(8.dp))
         AuthTextField(state.confirmPassword, viewModel::onConfirmPasswordChange, "Confirm Password", isPassword = true)
+        Text(
+            text = "Password should be at least 6 characters",
+            fontSize = 12.sp,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -68,6 +74,16 @@ fun RegisterScreen(
 
         // set error state if not null
         ErrorText(state.error)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        AuthButton(
+            onClick = {
+                navController.navigate("role_select")
+            },
+            isLoading = false,
+            text = "Login Instead"
+        )
     }
 }
 
