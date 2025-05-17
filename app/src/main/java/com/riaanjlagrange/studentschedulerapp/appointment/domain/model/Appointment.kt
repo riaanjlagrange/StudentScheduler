@@ -11,15 +11,3 @@ data class Appointment(
     val lecturer: AuthUser? = null,
     val student: AuthUser? = null
 )
-
-fun Appointment.getCounterPartyName(): String? {
-    return lecturer?.name ?: student?.name
-}
-
-fun Appointment.getCounterPartyRole(): String {
-    return when {
-        lecturer != null -> "Lecturer"
-        student != null -> "Student"
-        else -> "Unknown"
-    }
-}

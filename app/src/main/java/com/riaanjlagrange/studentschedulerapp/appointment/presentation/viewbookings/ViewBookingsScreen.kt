@@ -20,6 +20,7 @@ import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 @Composable
 fun ViewBookingsScreen(
     navController: NavController,
+    selectedRole: UserRole,
     viewModel: ViewBookingsViewModel = viewModel()
 ) {
     val state = viewModel.state
@@ -53,7 +54,7 @@ fun ViewBookingsScreen(
             LazyColumn {
                 items(state.appointments) { appointment ->
                     // checks if user is a lecturer or not. and displays differently depending on it
-                    BookingItem(appointment)
+                    BookingItem(appointment, selectedRole)
                 }
             }
         }

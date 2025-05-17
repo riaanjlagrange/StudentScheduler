@@ -10,18 +10,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseAuth
-import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.domain.model.Appointment
-import com.riaanjlagrange.studentschedulerapp.appointment.domain.model.getCounterPartyName
-import com.riaanjlagrange.studentschedulerapp.appointment.domain.model.getCounterPartyRole
 import androidx.compose.ui.graphics.Color
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 
 @Composable
-fun BookingItem(appointment: Appointment) {
+fun BookingItem(appointment: Appointment, selectedRole: UserRole) {
 
     val isBookedByMe = appointment.userId == FirebaseAuth.getInstance().currentUser?.uid
 
@@ -35,34 +31,28 @@ fun BookingItem(appointment: Appointment) {
             modifier = Modifier.padding(16.dp)
         ) {
             // displays the appointment, booker, date and time
-            Text("Appointment with ${appointment.getCounterPartyRole()}: ${appointment.getCounterPartyName()}")
             Text("Date: ${appointment.date}")
             Text("Time: ${appointment.time}")
 
             Spacer(modifier = Modifier.height(4.dp))
 
+            // this is a mess don't blame me TODO: clean up
             if (isBookedByMe) {
+                if (selectedRole == UserRole.Student) {
+                    Text("Appointment with Lecturer: ${appointment.lecturer?.name}")
+                } else {
+                    Text("Appointment with Student: ${appointment.student?.name}")
+                }
                 Text("Booked by you", color = Color.Gray)
-            } else if(appointment.lecturer != null) {
-                Text("Booked by ${appointment.lecturer.name}", color = Color.Gray)
-            } else if(appointment.student != null) {
-                Text("Booked by ${appointment.student.name}", color = Color.Gray)
+            } else if(selectedRole == UserRole.Student) {
+                Text("Appointment with Lecturer: ${appointment.lecturer?.name}")
+                Text("Booked by ${appointment.lecturer?.name}", color = Color.Gray)
+            } else if(selectedRole == UserRole.Lecturer) {
+                Text("Appointment with Student: ${appointment.student?.name}")
+                Text("Booked by ${appointment.student?.name}", color = Color.Gray)
             } else {
                 Text("Not sure who booked this..", color = Color.Gray)
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewComposable() {
-    BookingItem(
-        Appointment(
-            id = stringResource(R.string.default_uuid),
-            userId = stringResource(R.string.default_uuid),
-            date = stringResource(R.string.default_date),
-            time = stringResource(R.string.default_time)
-        )
-    )
 }

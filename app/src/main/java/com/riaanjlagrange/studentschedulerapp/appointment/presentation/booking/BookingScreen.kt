@@ -39,6 +39,7 @@ fun BookingScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadUserOptionsForBooking(selectedRole)
+        viewModel.updateYourUserToState(selectedRole)
     }
 
     Column(modifier = Modifier
@@ -83,7 +84,7 @@ fun BookingScreen(
                     }
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     if (success) {
-                        navController.navigate("view_bookings")
+                        navController.navigate("view_bookings/${selectedRole.name}")
                     }
                 }
             }

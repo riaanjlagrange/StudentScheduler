@@ -8,5 +8,5 @@ data class BookingViewState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val userOptions: List<AuthUser> = emptyList(),
-    val selectedUser: AuthUser? = null
+    val selectedUser: AuthUser? = null,
 )

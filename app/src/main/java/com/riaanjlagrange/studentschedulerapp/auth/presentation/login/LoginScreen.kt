@@ -58,12 +58,13 @@ fun LoginScreen(
             onClick = {
                 viewModel.login { user ->
                     if (user.role != selectedRole) {
-                        Toast.makeText(context, "Account Not Registered as Lecturer", Toast.LENGTH_LONG).show()
+                        // TODO: need to show account not registered as lecturer or student, not just as lecturer
+                        Toast.makeText(context, "Account not registered as ${selectedRole.name}", Toast.LENGTH_LONG).show()
                         return@login
                     }
 
                     Toast.makeText(context, "Welcome ${user.role.name}", Toast.LENGTH_SHORT).show()
-                    navController.navigate("booking/${selectedRole.name}")
+                    navController.navigate("view_bookings/${user.role.name}")
                 }
             },
             isLoading = state.isLoading,
@@ -97,7 +98,6 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     LoginScreen(
         navController = rememberNavController(),
-        selectedRole = TODO(),
-        viewModel = TODO()
+        selectedRole = UserRole.Student,
     )
 }

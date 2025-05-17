@@ -16,7 +16,6 @@ class BookingViewModel : ViewModel() {
     private val appointmentRepo = AppointmentRepositoryImpl()
     private val usersRepo = UsersRepositoryImp()
 
-    // TODO: WHAT DOES THIS DO
     private var currentRole: UserRole? = null
 
 
@@ -36,11 +35,40 @@ class BookingViewModel : ViewModel() {
         state = state.copy(
             selectedUser = user,
             appointment = when (currentRole) {
-                UserRole.Student -> state.appointment.copy(lecturer = user)
+                UserRole.Student -> {
+                    state.appointment.copy(lecturer = user)
+                }
+
                 UserRole.Lecturer -> state.appointment.copy(student = user)
                 else -> state.appointment
             }
         )
+    }
+
+    fun updateYourUserToState(selectedRole: UserRole) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        currentRole = selectedRole
+
+        viewModelScope.launch {
+            val yourUser = when (selectedRole) {
+                UserRole.Student -> usersRepo.getStudentById(userId)
+                UserRole.Lecturer -> usersRepo.getLecturerById(userId)
+            }
+
+            yourUser.fold(
+                ifLeft = { error ->
+                    state = state.copy(isLoading = false, error = error.error.message)
+                },
+                ifRight = { user ->
+                    state = state.copy(
+                        appointment = when (selectedRole) {
+                            UserRole.Student -> state.appointment.copy(student = user)
+                            UserRole.Lecturer -> state.appointment.copy(lecturer = user)
+                        }
+                    )
+                }
+            )
+        }
     }
 
     fun loadUserOptionsForBooking(selectedRole: UserRole) {
@@ -74,7 +102,8 @@ class BookingViewModel : ViewModel() {
         state = state.copy(isLoading = true, error = null)
 
         viewModelScope.launch {
-            val response: Either<FirestoreError, String> = appointmentRepo.bookAppointment(updatedAppointment)
+            val response: Either<FirestoreError, String> =
+                appointmentRepo.bookAppointment(updatedAppointment)
 
             response.fold(
                 ifLeft = { error ->
