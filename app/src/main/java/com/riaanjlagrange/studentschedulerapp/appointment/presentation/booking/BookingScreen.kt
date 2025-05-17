@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -22,24 +23,38 @@ import androidx.navigation.compose.rememberNavController
 import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.DatePickerButton
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.TimeSlotDropdown
+import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.UserSelectorDropdown
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 
 @Composable
 fun BookingScreen(
     navController: NavController,
+    selectedRole: UserRole,
     viewModel: BookingViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val state = viewModel.state
+
+    LaunchedEffect(Unit) {
+        viewModel.loadUserOptionsForBooking(selectedRole)
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(24.dp)
     ) {
         // Header
-        Header("Book appointment")
+        Header("Book an appointment with  ${if (selectedRole == UserRole.Student) "Lecturer" else "Student"}:")
         Spacer(modifier = Modifier.height(16.dp))
+
+        UserSelectorDropdown(
+            selectedRole = selectedRole,
+            userOptions = state.userOptions,
+            selectedUser = state.selectedUser,
+            onUserSelected = { viewModel.updateSelectedUser(it) }
+        )
 
         // Date picker
         DatePickerButton(state.appointment.date) {
@@ -99,5 +114,5 @@ fun BookingScreen(
 )
 @Composable
 fun PreviewBookingScreen() {
-   BookingScreen(navController = rememberNavController())
+   BookingScreen(navController = rememberNavController(), UserRole.Student)
 }

@@ -33,11 +33,15 @@ class AppointmentRepositoryImpl(
     override suspend fun getAppointments(userId: String): Either<FirestoreError, List<Appointment>> {
         return try {
             val snapshot: QuerySnapshot = db.collection("appointments")
-                .whereEqualTo("userId", userId)
                 .get()
                 .await()  // suspends until task completes
 
-            val appointments = snapshot.documents.mapNotNull { it.toObject(Appointment::class.java) }
+            val appointments = snapshot.toObjects(Appointment::class.java)
+                .filter { appt ->
+                    appt.userId == userId ||
+                            appt.student?.uid == userId ||
+                            appt.lecturer?.uid == userId
+                }
             Either.Right(appointments)
         } catch (e: Exception) {
             Either.Left(e.toFirestoreError(e))

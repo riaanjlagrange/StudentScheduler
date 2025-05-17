@@ -63,10 +63,7 @@ fun LoginScreen(
                     }
 
                     Toast.makeText(context, "Welcome ${user.role.name}", Toast.LENGTH_SHORT).show()
-                    when (user.role) {
-                        UserRole.Student -> navController.navigate("booking")
-                        UserRole.Lecturer -> navController.navigate("lecturer_dashboard")
-                    }
+                    navController.navigate("booking/${selectedRole.name}")
                 }
             },
             isLoading = state.isLoading,

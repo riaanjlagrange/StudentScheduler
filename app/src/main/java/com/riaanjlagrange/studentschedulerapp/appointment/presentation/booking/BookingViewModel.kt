@@ -7,10 +7,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.riaanjlagrange.studentschedulerapp.appointment.data.repository.AppointmentRepositoryImpl
 import kotlinx.coroutines.launch
 import arrow.core.Either
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.AuthUser
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import com.riaanjlagrange.studentschedulerapp.core.data.repository.UsersRepositoryImp
 import com.riaanjlagrange.studentschedulerapp.core.domain.model.FirestoreError
 
 class BookingViewModel : ViewModel() {
-    private val repo = AppointmentRepositoryImpl()
+    private val appointmentRepo = AppointmentRepositoryImpl()
+    private val usersRepo = UsersRepositoryImp()
+
+    // TODO: WHAT DOES THIS DO
+    private var currentRole: UserRole? = null
+
 
     var state by mutableStateOf(BookingViewState())
         private set
@@ -22,6 +30,42 @@ class BookingViewModel : ViewModel() {
     fun updateTime(time: String) {
         state = state.copy(appointment = state.appointment.copy(time = time))
     }
+
+
+    fun updateSelectedUser(user: AuthUser) {
+        state = state.copy(
+            selectedUser = user,
+            appointment = when (currentRole) {
+                UserRole.Student -> state.appointment.copy(lecturer = user)
+                UserRole.Lecturer -> state.appointment.copy(student = user)
+                else -> state.appointment
+            }
+        )
+    }
+
+    fun loadUserOptionsForBooking(selectedRole: UserRole) {
+        currentRole = selectedRole
+
+        state = state.copy(isLoading = true)
+
+        viewModelScope.launch {
+            val result = when (selectedRole) {
+                UserRole.Student -> usersRepo.getAllLecturers()
+                UserRole.Lecturer -> usersRepo.getAllStudents()
+            }
+
+            result.fold(
+                ifLeft = { error ->
+                    state = state.copy(isLoading = false, error = error.error.message)
+                },
+                ifRight = { users ->
+                    state = state.copy(isLoading = false, userOptions = users)
+                }
+            )
+        }
+    }
+
+
     fun book(onResult: (Boolean) -> Unit) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
@@ -30,7 +74,7 @@ class BookingViewModel : ViewModel() {
         state = state.copy(isLoading = true, error = null)
 
         viewModelScope.launch {
-            val response: Either<FirestoreError, String> = repo.bookAppointment(updatedAppointment)
+            val response: Either<FirestoreError, String> = appointmentRepo.bookAppointment(updatedAppointment)
 
             response.fold(
                 ifLeft = { error ->
@@ -50,5 +94,4 @@ class BookingViewModel : ViewModel() {
             )
         }
     }
-
 }

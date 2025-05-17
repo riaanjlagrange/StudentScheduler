@@ -39,6 +39,7 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
     override suspend fun register(
+        name: String,
         email: String,
         password: String,
         confirmPassword: String,
@@ -55,6 +56,7 @@ class AuthRepositoryImpl : AuthRepository {
 
             val user = AuthUser(
                 uid = uid,
+                name = name,
                 email = email,
                 role = role
             )

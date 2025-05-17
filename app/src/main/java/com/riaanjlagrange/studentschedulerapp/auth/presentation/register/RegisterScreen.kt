@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.riaanjlagrange.studentschedulerapp.R
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthButton
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthTextField
@@ -45,7 +46,9 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // set register text fields of email, password and confirm password
+        // set register text fields of name, email, password and confirm password
+        AuthTextField(state.name, viewModel::onNameChange, "Name")
+        Spacer(modifier = Modifier.height(8.dp))
         AuthTextField(state.email, viewModel::onEmailChange, "Email")
         Spacer(modifier = Modifier.height(8.dp))
         AuthTextField(state.password, viewModel::onPasswordChange, "Password", isPassword = true)
@@ -65,7 +68,7 @@ fun RegisterScreen(
                     Toast
                         .makeText(context, "Registration Successful!", Toast.LENGTH_SHORT)
                         .show()
-                    navController.navigate("login")
+                    navController.navigate("login/${UserRole.Student}")
                 }
             },
             isLoading = state.isLoading,

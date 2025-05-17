@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.riaanjlagrange.studentschedulerapp.auth.data.repository.AuthRepositoryImpl
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.AuthUser
-import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import kotlinx.coroutines.launch
 
 class RegisterViewModel: ViewModel() {
@@ -16,6 +15,9 @@ class RegisterViewModel: ViewModel() {
     var state by mutableStateOf(RegisterViewState())
         private set
 
+    fun onNameChange(name: String) {
+        state = state.copy(name = name)
+    }
 
     fun onEmailChange(email: String) {
         state = state.copy(email = email)
@@ -29,15 +31,12 @@ class RegisterViewModel: ViewModel() {
         state = state.copy(confirmPassword = confirm)
     }
 
-    fun onRoleSelected(role: UserRole) {
-        state = state.copy(role = role)
-    }
-
     fun register(onSuccess: (AuthUser) -> Unit) {
         state = state.copy(isLoading = true, error = null)
 
         viewModelScope.launch {
             val result = repo.register(
+                name = state.name,
                 email = state.email,
                 password = state.password,
                 confirmPassword = state.confirmPassword,

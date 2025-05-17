@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components.BookingItem
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 
 @Composable
@@ -51,6 +52,7 @@ fun ViewBookingsScreen(
         else {
             LazyColumn {
                 items(state.appointments) { appointment ->
+                    // checks if user is a lecturer or not. and displays differently depending on it
                     BookingItem(appointment)
                 }
             }
