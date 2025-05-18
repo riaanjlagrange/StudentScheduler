@@ -30,8 +30,10 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
             RegisterScreen(navController)
         }
 
-        composable("booking") {
-            BookingScreen(navController)
+        composable("booking/{role}") { backStackEntry ->
+            val roleString = backStackEntry.arguments?.getString("role") ?: "student"
+            val selectedRole = UserRole.valueOf(roleString)
+            BookingScreen(navController, selectedRole)
         }
 
 

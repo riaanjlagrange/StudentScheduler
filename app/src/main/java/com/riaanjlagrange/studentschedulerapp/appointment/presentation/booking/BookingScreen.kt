@@ -32,15 +32,17 @@ import kotlinx.coroutines.delay
 @Composable
 fun BookingScreen(
     navController: NavController,
+    selectedRole: UserRole,
     viewModel: BookingViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val state = viewModel.state
 
-    val role = state.yourUser?.role ?: UserRole.Student
+    val role = selectedRole
 
     LaunchedEffect(Unit) {
         viewModel.loadUser()
+        delay(2000)
         viewModel.loadUserOptionsForBooking(role)
         viewModel.updateYourUserToState(role)
     }
@@ -87,7 +89,9 @@ fun BookingScreen(
                     }
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     if (success) {
-                        navController.navigate("view_bookings")
+                        navController.navigate("view_bookings") {
+                            popUpTo(0)
+                        }
                     }
                 }
             }
@@ -118,5 +122,5 @@ fun BookingScreen(
 )
 @Composable
 fun PreviewBookingScreen() {
-   BookingScreen(navController = rememberNavController())
+   BookingScreen(navController = rememberNavController(), UserRole.Student)
 }

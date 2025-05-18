@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -120,10 +123,12 @@ class MainActivity : ComponentActivity() {
                                 bottomBarScreens.forEach { screen ->
                                     NavigationBarItem(
                                         icon = {
-                                            Icon(
-                                                Icons.Default.Home,
-                                                contentDescription = null
-                                            )
+                                            when (screen.title) {
+                                                "Home" -> Icon(Icons.Default.Home, contentDescription = null)
+                                                "Bookings" -> Icon(Icons.Default.Info, contentDescription = null)
+                                                "Feedback" -> Icon(Icons.Default.CheckCircle, contentDescription = null)
+                                                "Calendar" -> Icon(Icons.Default.DateRange, contentDescription = null)
+                                            }
                                         },
                                         label = { Text(screen.title) },
                                         selected = currentRoute == screen.route,

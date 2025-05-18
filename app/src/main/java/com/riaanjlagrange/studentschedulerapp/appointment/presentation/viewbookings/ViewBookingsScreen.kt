@@ -40,7 +40,7 @@ fun ViewBookingsScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("booking")
+                    navController.navigate("booking/${role}")
                 }
             ) {
                 Icon(
