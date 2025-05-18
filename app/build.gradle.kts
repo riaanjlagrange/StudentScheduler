@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation("io.arrow-kt:arrow-core:2.1.0")
     implementation("io.arrow-kt:arrow-fx-coroutines:2.1.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
 
 apply(plugin = "com.google.gms.google-services")
