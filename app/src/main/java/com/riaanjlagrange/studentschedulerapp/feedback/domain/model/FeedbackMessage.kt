@@ -5,7 +5,6 @@ import java.util.UUID
 
 data class FeedbackMessage(
     val id: String = UUID.randomUUID().toString(),
-    val userId: String = "",
     val message: String = "",
     val category: FeedbackCategory = FeedbackCategory.General,
     val timestamp: Long = System.currentTimeMillis(),

@@ -12,6 +12,7 @@ import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.login.LoginScreen
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.register.RegisterScreen
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.role.RoleSelectScreen
+import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedback.FeedbackChatScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -42,8 +43,17 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
         }
 
         composable("feedback") {
-            // FeedbackScreen(navController)
+            // viewModel should load all lecturers
+            FeedbackListScreen(navController, lecturers, isLoading = false) { selected ->
+                navController.navigate("feedback_chat/${selected.uid}")
+            }
         }
+
+        composable("feedback_chat/{receiverId}") { backStackEntry ->
+            val receiverId = backStackEntry.arguments?.getString("receiverId") ?: ""
+            FeedbackChatScreen(navController, receiverId)
+        }
+
 
         composable("calendar") {
             CalendarScreen(navController)
