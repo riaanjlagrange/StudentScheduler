@@ -1,40 +1,44 @@
 package com.riaanjlagrange.studentschedulerapp.auth.presentation.role
 
-import androidx.compose.foundation.layout.Arrangement
+import com.riaanjlagrange.studentschedulerapp.R
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
-import androidx.compose.material3.Text
+import androidx.compose.ui.res.painterResource
+import com.riaanjlagrange.studentschedulerapp.auth.presentation.role.components.RoleCard
 
 @Composable
 fun RoleSelectScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().padding(32.dp),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Continue As", fontSize = 24.sp, modifier = Modifier.padding(bottom = 24.dp))
+        // TODO: update with higher res image
+        Image(
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp)
+        )
 
-        Button(onClick = {
-            navController.navigate("login/${UserRole.Student.name}")
-        }, modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)) {
-            Text("Student")
-        }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            navController.navigate("login/${UserRole.Lecturer.name}")
-        }, modifier = Modifier.fillMaxWidth()) {
-            Text("Lecturer")
-        }
+        RoleCard(navController, UserRole.Student.name)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        RoleCard(navController, UserRole.Lecturer.name)
+
+
     }
 }
 
