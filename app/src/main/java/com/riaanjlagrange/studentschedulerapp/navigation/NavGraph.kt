@@ -47,12 +47,9 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
             CalendarScreen(navController)
         }
 
-        composable("student_dashboard") {
-            // CalendarScreen(navController)
+        composable("dashboard") {
+            // DashboardScreen(navController)
         }
 
-        composable("lecturer_dashboard") {
-            // CalendarScreen(navController)
-        }
     }
 }

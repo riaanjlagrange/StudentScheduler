@@ -30,7 +30,7 @@ fun RoleSelectScreen(navController: NavController) {
         LaunchedEffect(user) {
             if (user != null) {
                 navController.navigate("view_bookings") {
-                    popUpTo("register") { inclusive = true }
+                    popUpTo("role_select") { inclusive = true }
                 }
             }
         }

@@ -57,9 +57,6 @@ fun ViewBookingsScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            // Header
-            Header(title = stringResource(R.string.bookings_header))
-
             // Loading
             if (state.isLoading) {
                 CircularProgressIndicator()

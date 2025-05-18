@@ -40,7 +40,6 @@ fun BookingScreen(
     val role = state.yourUser?.role ?: UserRole.Student
 
     LaunchedEffect(Unit) {
-        delay(2000)
         viewModel.loadUser()
         viewModel.loadUserOptionsForBooking(role)
         viewModel.updateYourUserToState(role)

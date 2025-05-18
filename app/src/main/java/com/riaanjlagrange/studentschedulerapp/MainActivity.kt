@@ -1,17 +1,14 @@
 package com.riaanjlagrange.studentschedulerapp
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -63,8 +60,6 @@ class MainActivity : ComponentActivity() {
                     BottomNav.Calender
                 )
                 val shouldShowBottomBar = bottomBarScreens.any { it.route == currentRoute }
-                val user = FirebaseAuth.getInstance().currentUser
-
                 Scaffold(
 
                     topBar = {
@@ -74,14 +69,22 @@ class MainActivity : ComponentActivity() {
                                     when {
                                         currentRoute?.startsWith("login") == true -> "Login"
                                         currentRoute?.startsWith("register") == true -> "Register"
+                                        currentRoute?.startsWith("dashboard") == true -> "Dashboard"
                                         currentRoute?.startsWith("booking") == true -> "Book Appointment"
                                         currentRoute?.startsWith("view_bookings") == true -> "My Bookings"
+                                        currentRoute?.startsWith("feedback") == true -> "Feedback"
+                                        currentRoute?.startsWith("calendar") == true -> "My Calendar"
                                         else -> "Stadio Scheduler"
                                     }
                                 )
                             },
                             navigationIcon = {
-                                if (navController.previousBackStackEntry != null) {
+                                if (navController.previousBackStackEntry != null
+                                    && currentRoute?.startsWith("dashboard") == false
+                                    && currentRoute.startsWith("view_bookings") == false
+                                    && currentRoute.startsWith("feedback") == false
+                                    && currentRoute.startsWith("calendar") == false
+                                ) {
                                     IconButton(onClick = { navController.popBackStack() }) {
                                         Icon(
                                             Icons.AutoMirrored.Filled.ArrowBack,
@@ -107,7 +110,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 }
-                            }
+                            },
                         )
                     },
 
