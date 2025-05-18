@@ -14,8 +14,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.components.AuthButton
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
@@ -31,6 +33,16 @@ fun LoginScreen(
     // get state from LoginViewModel's state
     val state = viewModel.state
     val context = LocalContext.current
+
+    // check if user is already signed in or not
+    val user = FirebaseAuth.getInstance().currentUser
+    LaunchedEffect(user) {
+        if (user != null) {
+            navController.navigate("view_bookings") {
+                popUpTo("login/${selectedRole.name}") { inclusive = true }
+            }
+        }
+    }
 
     // column to vertically display composables
     Column(
@@ -58,13 +70,17 @@ fun LoginScreen(
             onClick = {
                 viewModel.login { user ->
                     if (user.role != selectedRole) {
-                        // TODO: need to show account not registered as lecturer or student, not just as lecturer
                         Toast.makeText(context, "Account not registered as ${selectedRole.name}", Toast.LENGTH_LONG).show()
                         return@login
                     }
 
                     Toast.makeText(context, "Welcome ${user.role.name}", Toast.LENGTH_SHORT).show()
-                    navController.navigate("view_bookings/${user.role.name}")
+                    navController.navigate("view_bookings") {
+                        popUpTo("login/${selectedRole.name}") { inclusive = true }
+                        popUpTo("register") { inclusive = true }
+                        launchSingleTop = true
+                    }
+                    //navController.navigate("calendar")
                 }
             },
             isLoading = state.isLoading,

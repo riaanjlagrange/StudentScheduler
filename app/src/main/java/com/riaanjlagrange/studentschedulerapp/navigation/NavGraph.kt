@@ -1,5 +1,6 @@
 package com.riaanjlagrange.studentschedulerapp.navigation
 
+import CalendarScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -29,28 +30,13 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
             RegisterScreen(navController)
         }
 
-        composable("booking/{role}") { backStackEntry ->
-            val roleString = backStackEntry.arguments?.getString("role") ?: "student"
-            val selectedRole = UserRole.valueOf(roleString)
-            BookingScreen(navController, selectedRole)
-        }
-
         composable("booking") {
-            // fallback
-            BookingScreen(navController, UserRole.Student)
-        }
-
-
-        composable("view_bookings/{role}") { backStackEntry ->
-            val roleString = backStackEntry.arguments?.getString("role") ?: "Student"
-            val selectedRole = UserRole.valueOf(roleString)
-            ViewBookingsScreen(navController, selectedRole)
+            BookingScreen(navController)
         }
 
 
         composable("view_bookings") {
-            // fallback version if no role passed
-            ViewBookingsScreen(navController, UserRole.Student)
+            ViewBookingsScreen(navController)
         }
 
         composable("feedback") {
@@ -58,7 +44,7 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
         }
 
         composable("calendar") {
-            // CalendarScreen(navController)
+            CalendarScreen(navController)
         }
 
         composable("student_dashboard") {

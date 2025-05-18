@@ -1,4 +1,4 @@
-package com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings
+package com.riaanjlagrange.studentschedulerapp.calendar.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,16 +10,15 @@ import com.riaanjlagrange.studentschedulerapp.appointment.data.repository.Appoin
 import com.riaanjlagrange.studentschedulerapp.core.data.repository.UsersRepositoryImp
 import kotlinx.coroutines.launch
 
-class ViewBookingsViewModel : ViewModel() {
-
-    private val appointmentRepo = AppointmentRepositoryImpl()
+class CalendarViewModel: ViewModel() {
+    private val appointmentsRepo = AppointmentRepositoryImpl()
     private val usersRepo = UsersRepositoryImp()
 
-    var state by mutableStateOf(ViewBookingsViewState())
+    var state by mutableStateOf(CalendarViewState())
         private set
 
     fun loadUser() {
-        state = state.copy(yourUserIsLoading = true)
+        state = state.copy(userIsLoading = true)
 
         viewModelScope.launch {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
@@ -28,29 +27,29 @@ class ViewBookingsViewModel : ViewModel() {
 
             result.fold(
                 ifLeft = { error ->
-                    state = state.copy(yourUserError = error.error.message, yourUserIsLoading = false)
+                    state = state.copy(userError = error.error.message, userIsLoading = false)
                 },
                 ifRight = { user ->
-                    state = state.copy(yourUser = user, yourUserIsLoading = false)
+                    state = state.copy(yourUser = user, userIsLoading = false)
                 }
             )
         }
     }
 
     fun loadAppointments() {
-        state = state.copy(isLoading = true)
+        state = state.copy(appointmentsIsLoading = true)
 
         viewModelScope.launch {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
 
-            val result = appointmentRepo.getAppointments(userId)
+            val result = appointmentsRepo.getAppointments(userId)
 
             result.fold(
                 ifLeft = { error ->
-                    state = state.copy(error = error.error.message, isLoading = false)
+                    state = state.copy(appointmentsError = error.error.message, appointmentsIsLoading = false)
                 },
                 ifRight = { appointments ->
-                    state = state.copy(appointments = appointments, isLoading = false)
+                    state = state.copy(appointments = appointments, appointmentsIsLoading = false)
                 }
             )
         }

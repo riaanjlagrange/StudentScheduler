@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import androidx.compose.ui.res.painterResource
+import com.google.firebase.auth.FirebaseAuth
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.role.components.RoleCard
 
 @Composable
@@ -23,6 +25,15 @@ fun RoleSelectScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize().padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // check if user is alreayd logged in
+        val user = FirebaseAuth.getInstance().currentUser
+        LaunchedEffect(user) {
+            if (user != null) {
+                navController.navigate("view_bookings") {
+                    popUpTo("register") { inclusive = true }
+                }
+            }
+        }
         // TODO: update with higher res image
         Image(
             painter = painterResource(R.drawable.ic_launcher_foreground),

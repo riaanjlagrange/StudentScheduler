@@ -1,12 +1,17 @@
 package com.riaanjlagrange.studentschedulerapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,9 +28,11 @@ import com.riaanjlagrange.studentschedulerapp.navigation.AppNavGraph
 import com.riaanjlagrange.studentschedulerapp.navigation.BottomNav
 import com.riaanjlagrange.studentschedulerapp.ui.theme.StudentSchedulerAppTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -37,7 +44,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         splashscreen.setKeepOnScreenCondition { keepSplashScreen }
         lifecycleScope.launch {
-            delay(5000)
+            delay(3000)
             keepSplashScreen = false
         }
 
@@ -56,6 +63,7 @@ class MainActivity : ComponentActivity() {
                     BottomNav.Calender
                 )
                 val shouldShowBottomBar = bottomBarScreens.any { it.route == currentRoute }
+                val user = FirebaseAuth.getInstance().currentUser
 
                 Scaffold(
 
@@ -79,6 +87,24 @@ class MainActivity : ComponentActivity() {
                                             Icons.AutoMirrored.Filled.ArrowBack,
                                             contentDescription = "Back"
                                         )
+                                    }
+                                }
+                            },
+                            actions = {
+                                if (currentRoute != null) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ){
+                                        Text("Switch Role")
+                                        IconButton(onClick = {
+                                            FirebaseAuth.getInstance().signOut()
+
+                                            navController.navigate("role_select") {
+                                                popUpTo(0) { inclusive = true } // clears backstack
+                                            }
+                                        }) {
+                                            Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout")
+                                        }
                                     }
                                 }
                             }

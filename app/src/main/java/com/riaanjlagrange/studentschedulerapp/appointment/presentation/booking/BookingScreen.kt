@@ -27,19 +27,23 @@ import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.c
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
+import kotlinx.coroutines.delay
 
 @Composable
 fun BookingScreen(
     navController: NavController,
-    selectedRole: UserRole,
     viewModel: BookingViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val state = viewModel.state
 
+    val role = state.yourUser?.role ?: UserRole.Student
+
     LaunchedEffect(Unit) {
-        viewModel.loadUserOptionsForBooking(selectedRole)
-        viewModel.updateYourUserToState(selectedRole)
+        delay(2000)
+        viewModel.loadUser()
+        viewModel.loadUserOptionsForBooking(role)
+        viewModel.updateYourUserToState(role)
     }
 
     Column(modifier = Modifier
@@ -47,11 +51,11 @@ fun BookingScreen(
         .padding(24.dp)
     ) {
         // Header
-        Header("Book an appointment with  ${if (selectedRole == UserRole.Student) "Lecturer" else "Student"}:")
+        Header("Book an appointment with  ${if (role == UserRole.Student) "Lecturer" else "Student"}:")
         Spacer(modifier = Modifier.height(16.dp))
 
         UserSelectorDropdown(
-            selectedRole = selectedRole,
+            selectedRole = role,
             userOptions = state.userOptions,
             selectedUser = state.selectedUser,
             onUserSelected = { viewModel.updateSelectedUser(it) }
@@ -84,7 +88,7 @@ fun BookingScreen(
                     }
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     if (success) {
-                        navController.navigate("view_bookings/${selectedRole.name}")
+                        navController.navigate("view_bookings")
                     }
                 }
             }
@@ -115,5 +119,5 @@ fun BookingScreen(
 )
 @Composable
 fun PreviewBookingScreen() {
-   BookingScreen(navController = rememberNavController(), UserRole.Student)
+   BookingScreen(navController = rememberNavController())
 }

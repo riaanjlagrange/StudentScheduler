@@ -45,6 +45,22 @@ class UsersRepositoryImp : UsersRepository {
         }
     }
 
+    override suspend fun getUserById(userId: String): Either<FirestoreError, AuthUser> {
+        return try {
+            val snapshot = db.collection("users")
+                .whereEqualTo("uid", userId)
+                .get()
+                .await()
+
+            val user = snapshot.toObjects(AuthUser::class.java).firstOrNull()
+                ?: return FirestoreError(FirestoreApiError.NotFoundError).left()
+
+            user.right()
+        } catch (e: Exception) {
+            e.toFirestoreError(e).left()
+        }
+    }
+
     override suspend fun getStudentById(studentId: String): Either<FirestoreError, AuthUser> {
         return try {
             val snapshot = db.collection("users")
@@ -61,6 +77,7 @@ class UsersRepositoryImp : UsersRepository {
             e.toFirestoreError(e).left()
         }
     }
+
     override suspend fun getLecturerById(lecturerId: String): Either<FirestoreError, AuthUser> {
         return try {
             val snapshot = db.collection("users")

@@ -55,8 +55,8 @@ fun RoleCard(navController: NavController, role: String) {
         modifier = Modifier
             .height(200.dp)
             .padding(10.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .border(1.dp, primaryColor, RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .border(1.dp, primaryColor, RoundedCornerShape(8.dp))
             .drawBehind {
                 val strokeWidth = 5.dp.toPx()
                 val y = size.height - strokeWidth / 2
@@ -101,7 +101,7 @@ fun RoleCard(navController: NavController, role: String) {
             .fillMaxWidth()
             .padding(10.dp)
             .align(Alignment.BottomCenter),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         ) {
             Text("Continue as $role")
         }

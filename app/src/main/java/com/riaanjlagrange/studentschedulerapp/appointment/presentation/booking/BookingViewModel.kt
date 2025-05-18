@@ -30,6 +30,25 @@ class BookingViewModel : ViewModel() {
         state = state.copy(appointment = state.appointment.copy(time = time))
     }
 
+    fun loadUser() {
+        state = state.copy(yourUserIsLoading = true)
+
+        viewModelScope.launch {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+
+            val result = usersRepo.getUserById(userId)
+
+            result.fold(
+                ifLeft = { error ->
+                    state = state.copy(yourUserError = error.error.message, yourUserIsLoading = false)
+                },
+                ifRight = { user ->
+                    state = state.copy(yourUser = user, yourUserIsLoading = false)
+                }
+            )
+        }
+    }
+
 
     fun updateSelectedUser(user: AuthUser) {
         state = state.copy(
@@ -57,7 +76,7 @@ class BookingViewModel : ViewModel() {
 
             yourUser.fold(
                 ifLeft = { error ->
-                    state = state.copy(isLoading = false, error = error.error.message)
+                    state = state.copy(userOptionsIsLoading = false, userOptionsError = error.error.message)
                 },
                 ifRight = { user ->
                     state = state.copy(
@@ -74,7 +93,7 @@ class BookingViewModel : ViewModel() {
     fun loadUserOptionsForBooking(selectedRole: UserRole) {
         currentRole = selectedRole
 
-        state = state.copy(isLoading = true)
+        state = state.copy(userOptionsIsLoading = true)
 
         viewModelScope.launch {
             val result = when (selectedRole) {
@@ -84,10 +103,10 @@ class BookingViewModel : ViewModel() {
 
             result.fold(
                 ifLeft = { error ->
-                    state = state.copy(isLoading = false, error = error.error.message)
+                    state = state.copy(userOptionsIsLoading = false, userOptionsError = error.error.message)
                 },
                 ifRight = { users ->
-                    state = state.copy(isLoading = false, userOptions = users)
+                    state = state.copy(userOptionsIsLoading = false, userOptions = users)
                 }
             )
         }

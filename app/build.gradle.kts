@@ -75,6 +75,10 @@ dependencies {
     implementation("io.arrow-kt:arrow-core:2.1.0")
     implementation("io.arrow-kt:arrow-fx-coroutines:2.1.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    // calendar
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.4.0")
+
+    // separate artifact with utilities for working with kotlinx-datetime
 }
 
 apply(plugin = "com.google.gms.google-services")
