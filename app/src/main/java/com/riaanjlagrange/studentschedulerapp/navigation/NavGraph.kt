@@ -13,6 +13,7 @@ import com.riaanjlagrange.studentschedulerapp.auth.presentation.login.LoginScree
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.register.RegisterScreen
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.role.RoleSelectScreen
 import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedback.FeedbackChatScreen
+import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedbackchatlist.FeedbackChatListScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -43,10 +44,7 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
         }
 
         composable("feedback") {
-            // viewModel should load all lecturers
-            FeedbackListScreen(navController, lecturers, isLoading = false) { selected ->
-                navController.navigate("feedback_chat/${selected.uid}")
-            }
+            FeedbackChatListScreen(navController)
         }
 
         composable("feedback_chat/{receiverId}") { backStackEntry ->

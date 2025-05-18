@@ -1,7 +1,9 @@
+package com.riaanjlagrange.studentschedulerapp.feedback.data.repository
 
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.riaanjlagrange.studentschedulerapp.core.domain.model.FirestoreError
@@ -20,17 +22,16 @@ class FeedbackRepositoryImpl : FeedbackRepository {
         } catch (e: Exception) {
             e.toFirestoreError(e).left()
         }
-    }
 
-    override suspend fun getFeedbackMessages(
+    }    override suspend fun getFeedbackMessages(
         userId: String,
         withUserId: String
     ): Either<FirestoreError, List<FeedbackMessage>> {
+        val participants = listOf(userId, withUserId).sorted()
         return try {
             val snapshot = db.collection("feedback")
-                .whereIn("student.uid", listOf(userId, withUserId))
-                .whereIn("lecturer.uid", listOf(userId, withUserId))
-                .orderBy("timestamp")
+                .whereEqualTo("participants", participants)
+                .orderBy("timestamp", Query.Direction.ASCENDING)
                 .get()
                 .await()
 

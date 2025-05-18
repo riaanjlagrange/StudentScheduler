@@ -10,7 +10,9 @@ import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.core.data.repository.UsersRepositoryImp
 import com.riaanjlagrange.studentschedulerapp.feedback.data.repository.FeedbackRepositoryImpl
 import com.riaanjlagrange.studentschedulerapp.feedback.domain.model.FeedbackCategory
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class FeedbackViewModel: ViewModel() {
     private val feedbackRepo = FeedbackRepositoryImpl()
@@ -34,8 +36,14 @@ class FeedbackViewModel: ViewModel() {
                 ifRight = { user ->
                     state = state.copy(
                         message = when(user.role) {
-                            UserRole.Student -> state.message.copy(student = user)
-                            UserRole.Lecturer -> state.message.copy(lecturer = user)
+                            UserRole.Student -> state.message.copy(
+                                student = user,
+                                from = UserRole.Student
+                            )
+                            UserRole.Lecturer -> state.message.copy(
+                                lecturer = user,
+                                from = UserRole.Lecturer
+                            )
                         },
                         yourUser = user,
                         yourUserIsLoading = false
@@ -96,17 +104,28 @@ class FeedbackViewModel: ViewModel() {
 
     fun sendMessage(receiverId: String) {
         state = state.copy(messageIsLoading = true)
-        val message = state.message.copy()
+
+        //TODO: need to set input requirement checks
+        val participants = listOf(state.yourUser!!.uid, state.selectedUser!!.uid).sorted()
+
+        state = state.copy(state.message.copy(participants = participants))
+
+        val message = state.message.copy(
+            participants = participants,
+            id = UUID.randomUUID().toString(),
+            timestamp = System.currentTimeMillis()
+        )
 
         viewModelScope.launch {
-            val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
             val result = feedbackRepo.sendFeedback(message)
             result.fold(
                 ifLeft = { error ->
                     state = state.copy(messageError = error.error.message, messageIsLoading = false)
                 },
-                ifRight = { messages ->
+                ifRight = {
                     state = state.copy(messageError = null, isLoading = false)
+                    delay(100)
+                    loadMessages(receiverId)
                 }
             )
         }
