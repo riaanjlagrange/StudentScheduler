@@ -20,6 +20,8 @@ import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components.BookingItem
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryLecturer
+import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryStudent
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import kotlinx.coroutines.delay
 
@@ -55,7 +57,7 @@ fun ViewBookingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp)
+                .padding(8.dp)
         ) {
             // Loading
             if (state.isLoading) {

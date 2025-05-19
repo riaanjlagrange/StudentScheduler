@@ -52,7 +52,7 @@ fun BookingScreen(
         .padding(24.dp)
     ) {
         // Header
-        Header("Book an appointment with  ${if (role == UserRole.Student) "Lecturer" else "Student"}:")
+        Header("Book an appointment with ${if (role == UserRole.Student) "Lecturer" else "Student"}:")
         Spacer(modifier = Modifier.height(16.dp))
 
         UserSelectorDropdown(
@@ -62,10 +62,6 @@ fun BookingScreen(
             onUserSelected = { viewModel.updateSelectedUser(it) }
         )
 
-        // Date picker
-        DatePickerButton(state.appointment.date) {
-            viewModel.updateDate(it)
-        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -75,6 +71,13 @@ fun BookingScreen(
             timeSlots = listOf("09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "03:00 PM"),
             onTimeSelected = { viewModel.updateTime(it) }
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Date picker
+        DatePickerButton(state.appointment.date) {
+            viewModel.updateDate(it)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

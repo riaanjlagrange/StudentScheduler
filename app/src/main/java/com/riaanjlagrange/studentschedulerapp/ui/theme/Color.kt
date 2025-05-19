@@ -14,7 +14,7 @@ val Pink80 = Color(0xFFEFB8C8)
 
 // Primary colors
 val PurplePrimary = Color(0xFF6750A4)
-val PurplePrimaryVariant = Color(0xFF7F67BE)
+val PurplePrimaryVariant = Color(0xFF494685)
 val OnPrimary = Color(0xFFFFFFFF)
 
 // Secondary colors
@@ -41,5 +41,7 @@ val AccentOrange = Color(0xFFFF9800)
 val AccentTeal = Color(0xFF03DAC5)
 val AccentBlue = Color(0xFF2196F3)
 val PrimaryStudent = Color(0xFF145C93)
+val PrimaryStudentBackground = Color(0xFFC1CBDE)
 val PrimaryLecturer = Color(0xFFA94115)
+val PrimaryLecturerBackground = Color(0xFFD9CACA)
 

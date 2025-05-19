@@ -43,7 +43,7 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier)
             ViewBookingsScreen(navController)
         }
 
-        composable("feedback") {
+        composable("view_feedback") {
             FeedbackChatListScreen(navController)
         }
 

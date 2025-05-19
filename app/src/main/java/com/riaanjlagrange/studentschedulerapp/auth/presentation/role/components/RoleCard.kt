@@ -56,7 +56,7 @@ fun RoleCard(navController: NavController, role: String) {
             .height(200.dp)
             .padding(10.dp)
             .clip(RoundedCornerShape(8.dp))
-            .border(2.dp, primaryColor, RoundedCornerShape(8.dp))
+            .border(1.dp, primaryColor, RoundedCornerShape(8.dp))
             .drawBehind {
                 val strokeWidth = 5.dp.toPx()
                 val y = size.height - strokeWidth / 2

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedback.components.UserCard
+import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedbackchatlist.components.UserCard
 
 @Composable
 fun FeedbackChatListScreen(

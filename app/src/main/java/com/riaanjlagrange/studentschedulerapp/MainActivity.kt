@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
@@ -30,9 +32,14 @@ import com.riaanjlagrange.studentschedulerapp.ui.theme.StudentSchedulerAppTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
+import com.riaanjlagrange.studentschedulerapp.ui.theme.Background
+import com.riaanjlagrange.studentschedulerapp.ui.theme.PurplePrimaryVariant
+import com.riaanjlagrange.studentschedulerapp.ui.theme.Secondary
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -69,29 +76,34 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(
-                                    when {
+                                    // Set title of top bar
+                                    text = when {
                                         currentRoute?.startsWith("login") == true -> "Login"
                                         currentRoute?.startsWith("register") == true -> "Register"
                                         currentRoute?.startsWith("dashboard") == true -> "Dashboard"
                                         currentRoute?.startsWith("booking") == true -> "Book Appointment"
                                         currentRoute?.startsWith("view_bookings") == true -> "My Bookings"
-                                        currentRoute?.startsWith("feedback") == true -> "Feedback"
+                                        currentRoute?.startsWith("view_feedback") == true -> "Feedback"
                                         currentRoute?.startsWith("calendar") == true -> "My Calendar"
                                         else -> "Stadio Scheduler"
-                                    }
+                                    },
+                                    // set color of title
+                                    color = Color.White
                                 )
                             },
                             navigationIcon = {
+                                // checks when the back button should appear
                                 if (navController.previousBackStackEntry != null
                                     && currentRoute?.startsWith("dashboard") == false
                                     && currentRoute.startsWith("view_bookings") == false
-                                    && currentRoute.startsWith("feedback") == false
+                                    && currentRoute.startsWith("view_feedback") == false
                                     && currentRoute.startsWith("calendar") == false
                                 ) {
                                     IconButton(onClick = { navController.popBackStack() }) {
                                         Icon(
                                             Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = "Back"
+                                            contentDescription = "Back",
+                                            tint = Color.White
                                         )
                                     }
                                 }
@@ -101,36 +113,48 @@ class MainActivity : ComponentActivity() {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically
                                     ){
-                                        Text("Switch Role")
-                                        IconButton(onClick = {
-                                            FirebaseAuth.getInstance().signOut()
+                                        Text(
+                                            text = "Switch Role",
+                                            modifier = Modifier
+                                                .clickable {
+                                                    FirebaseAuth.getInstance().signOut()
 
-                                            navController.navigate("role_select") {
-                                                popUpTo(0) { inclusive = true } // clears backstack
-                                            }
-                                        }) {
-                                            Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout")
-                                        }
+                                                    navController.navigate("role_select") {
+                                                        popUpTo(0) { inclusive = true } // clears backstack
+                                                    }
+                                                }
+                                                .padding(10.dp),
+                                            color = Color.White
+                                        )
+                                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = Color.White)
                                     }
                                 }
                             },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = PurplePrimaryVariant,
+                            )
                         )
                     },
 
                     bottomBar = {
                         if (shouldShowBottomBar) {
-                            NavigationBar {
+                            NavigationBar(
+                                containerColor = PurplePrimaryVariant
+                            ) {
                                 bottomBarScreens.forEach { screen ->
                                     NavigationBarItem(
                                         icon = {
                                             when (screen.title) {
-                                                "Home" -> Icon(Icons.Default.Home, contentDescription = null)
-                                                "Bookings" -> Icon(Icons.Default.Info, contentDescription = null)
-                                                "Feedback" -> Icon(Icons.Default.CheckCircle, contentDescription = null)
-                                                "Calendar" -> Icon(Icons.Default.DateRange, contentDescription = null)
+                                                "Home" -> Icon(Icons.Default.Home, contentDescription = null, tint = Color.White)
+                                                "Bookings" -> Icon(Icons.Default.Info, contentDescription = null, tint = Color.White)
+                                                "Feedback" -> Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color.White)
+                                                "Calendar" -> Icon(Icons.Default.DateRange, contentDescription = null, tint = Color.White)
                                             }
                                         },
-                                        label = { Text(screen.title) },
+                                        label = { Text(
+                                            text = screen.title,
+                                            color = Color.White
+                                        ) },
                                         selected = currentRoute == screen.route,
                                         onClick = {
                                             navController.navigate(screen.route) {
@@ -140,7 +164,7 @@ class MainActivity : ComponentActivity() {
                                                 launchSingleTop = true
                                                 restoreState = true
                                             }
-                                        }
+                                        },
                                     )
                                 }
                             }

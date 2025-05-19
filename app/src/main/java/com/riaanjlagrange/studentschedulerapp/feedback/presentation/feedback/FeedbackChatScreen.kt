@@ -28,12 +28,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryLecturer
+import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryStudent
+import com.riaanjlagrange.studentschedulerapp.ui.theme.PurplePrimaryVariant
 
 @Composable
 fun FeedbackChatScreen(
@@ -42,7 +47,11 @@ fun FeedbackChatScreen(
     viewModel: FeedbackViewModel = viewModel()
 ) {
     val state = viewModel.state
-    val user = FirebaseAuth.getInstance().currentUser
+    val roleLabelColor = when(state.yourUser?.role) {
+        UserRole.Student -> PrimaryStudent
+        UserRole.Lecturer -> PrimaryLecturer
+        else -> PurplePrimaryVariant
+    }
 
     // Load users and messages once
     LaunchedEffect(receiverId) {
@@ -53,6 +62,7 @@ fun FeedbackChatScreen(
 
     Scaffold(
         bottomBar = {
+            HorizontalDivider(modifier = Modifier.padding(4.dp), thickness = 2.dp, color = PrimaryStudent)
             Row(
                 Modifier.padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -80,25 +90,32 @@ fun FeedbackChatScreen(
             }
         }
     ) { innerPadding ->
-        Column(Modifier.padding(innerPadding).padding(32.dp)) {
-            Row {
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(8.dp),
+        ) {
+            Row (
+              verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(state.selectedUser?.name ?: "...", style = MaterialTheme.typography.titleLarge)
-                Spacer(Modifier.width(16.dp))
+                Spacer(Modifier.width(8.dp))
                 Text(
                     state.selectedUser?.role?.name ?: "...",
                     color = Color.White,
                     fontSize = 18.sp,
                     modifier = Modifier
-                        .background(Color.Blue)
-                        .clip(RoundedCornerShape(8.dp))
                         .padding(5.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(roleLabelColor)
                 )
             }
             Text(
                 state.selectedUser?.email ?: "...",
-                style = MaterialTheme.typography.labelMedium,
+                fontSize = 16.sp,
                 color = Color.Gray
             )
+            HorizontalDivider(modifier = Modifier.padding(4.dp), thickness = 2.dp, color = PrimaryStudent)
             Spacer(Modifier.height(8.dp))
 
             if (state.isLoading) {

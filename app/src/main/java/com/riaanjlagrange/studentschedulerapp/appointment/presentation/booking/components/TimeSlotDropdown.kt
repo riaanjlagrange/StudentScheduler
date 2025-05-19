@@ -1,45 +1,56 @@
 package com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeSlotDropdown(
     selectedTime: String,
     timeSlots: List<String>,
     onTimeSelected: (String) -> Unit
 ) {
-    // set default state to not expand dropdown
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
-        // button click expands dropdown
-        Button(onClick = { expanded = true }) {
-            Text(if (selectedTime.isBlank()) "Select Time" else selectedTime)
-        }
-    }
-
-    // set params to value of expanded, and set expanded to false upon dismissal
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-        // populate timeSlot items
-        timeSlots.forEach { slot ->
-            DropdownMenuItem(
-                text = { Text(slot) },
-                onClick = {
-                    // set time selected to state
-                    onTimeSelected(slot)
-                    expanded = false
-                }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        OutlinedTextField(
+            readOnly = true,
+            value = selectedTime.ifBlank { "" },
+            onValueChange = {},
+            label = { Text("Select Time") },
+            placeholder = { Text("Choose a time slot") },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
             )
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.exposedDropdownSize(true)
+        ) {
+            timeSlots.forEach { slot ->
+                DropdownMenuItem(
+                    text = { Text(slot) },
+                    onClick = {
+                        onTimeSelected(slot)
+                        expanded = false
+                    }
+                )
+            }
         }
     }
 }
@@ -49,7 +60,7 @@ fun TimeSlotDropdown(
 fun PreviewSlotDropdown() {
     TimeSlotDropdown(
         selectedTime = "",
-        timeSlots = listOf(""),
+        timeSlots = listOf("09:00 AM", "10:00 AM", "11:00 AM"),
         onTimeSelected = {}
     )
 }
