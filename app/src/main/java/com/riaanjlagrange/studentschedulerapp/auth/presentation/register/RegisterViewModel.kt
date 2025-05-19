@@ -23,6 +23,10 @@ class RegisterViewModel: ViewModel() {
         state = state.copy(email = email)
     }
 
+    fun onStudentIdChange(studentId: String) {
+        state = state.copy(studentId = studentId)
+    }
+
     fun onPasswordChange(password: String) {
         state = state.copy(password= password)
     }
@@ -38,6 +42,7 @@ class RegisterViewModel: ViewModel() {
             val result = repo.register(
                 name = state.name,
                 email = state.email,
+                studentId = state.studentId,
                 password = state.password,
                 confirmPassword = state.confirmPassword,
                 role = state.role

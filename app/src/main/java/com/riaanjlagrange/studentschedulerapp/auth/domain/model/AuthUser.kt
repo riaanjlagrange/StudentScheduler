@@ -4,6 +4,7 @@ data class AuthUser(
     val uid: String = "",
     val name: String = "",
     val email: String = "",
+    val studentId: String = "",
     val role: UserRole = UserRole.Student
 )
 

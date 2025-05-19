@@ -41,6 +41,7 @@ class AuthRepositoryImpl : AuthRepository {
     override suspend fun register(
         name: String,
         email: String,
+        studentId: String,
         password: String,
         confirmPassword: String,
         role: UserRole

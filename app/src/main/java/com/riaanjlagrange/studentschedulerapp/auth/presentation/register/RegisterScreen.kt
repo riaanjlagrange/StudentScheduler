@@ -62,6 +62,8 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(8.dp))
         AuthTextField(state.email, viewModel::onEmailChange, "Email")
         Spacer(modifier = Modifier.height(8.dp))
+        AuthTextField(state.studentId, viewModel::onStudentIdChange, "Student ID")
+        Spacer(modifier = Modifier.height(8.dp))
         AuthTextField(state.password, viewModel::onPasswordChange, "Password", isPassword = true)
         Spacer(modifier = Modifier.height(8.dp))
         AuthTextField(state.confirmPassword, viewModel::onConfirmPasswordChange, "Confirm Password", isPassword = true)
