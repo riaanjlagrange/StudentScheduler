@@ -76,8 +76,7 @@ fun LoginScreen(
 
                     Toast.makeText(context, "Welcome ${user.role.name}", Toast.LENGTH_SHORT).show()
                     navController.navigate("view_bookings") {
-                        popUpTo("login/${selectedRole.name}") { inclusive = true }
-                        popUpTo("register") { inclusive = true }
+                        popUpTo(0)
                         launchSingleTop = true
                     }
                     //navController.navigate("calendar")

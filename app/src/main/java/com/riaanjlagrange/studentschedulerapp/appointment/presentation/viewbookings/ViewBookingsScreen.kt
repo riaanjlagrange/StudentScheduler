@@ -1,5 +1,6 @@
 package com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,17 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components.BookingItem
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
-import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryLecturer
-import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryStudent
-import com.riaanjlagrange.studentschedulerapp.utils.components.Header
-import kotlinx.coroutines.delay
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ViewBookingsScreen(
     navController: NavController,
@@ -51,13 +48,10 @@ fun ViewBookingsScreen(
                 )
             }
         }
-    ) { paddingValues ->
-
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .padding(8.dp)
         ) {
             // Loading
             if (state.isLoading) {

@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -71,7 +72,6 @@ class MainActivity : ComponentActivity() {
                 )
                 val shouldShowBottomBar = bottomBarScreens.any { it.route == currentRoute }
                 Scaffold(
-
                     topBar = {
                         TopAppBar(
                             title = {
@@ -93,12 +93,7 @@ class MainActivity : ComponentActivity() {
                             },
                             navigationIcon = {
                                 // checks when the back button should appear
-                                if (navController.previousBackStackEntry != null
-                                    && currentRoute?.startsWith("dashboard") == false
-                                    && currentRoute.startsWith("view_bookings") == false
-                                    && currentRoute.startsWith("view_feedback") == false
-                                    && currentRoute.startsWith("calendar") == false
-                                ) {
+                                if (navController.previousBackStackEntry != null) {
                                     IconButton(onClick = { navController.popBackStack() }) {
                                         Icon(
                                             Icons.AutoMirrored.Filled.ArrowBack,
@@ -155,10 +150,19 @@ class MainActivity : ComponentActivity() {
                                             text = screen.title,
                                             color = Color.White
                                         ) },
+                                        alwaysShowLabel = true,
                                         selected = currentRoute == screen.route,
+                                        colors = NavigationBarItemDefaults.colors(
+                                            selectedIconColor = Color.Blue,
+                                            unselectedIconColor = Color.Gray,
+                                            selectedTextColor = Color.Blue,
+                                            unselectedTextColor = Color.Gray,
+                                            indicatorColor = Color(0xFFE3F2FD)
+
+                                        ),
                                         onClick = {
                                             navController.navigate(screen.route) {
-                                                popUpTo(navController.graph.startDestinationId) {
+                                                popUpTo(0) {
                                                     saveState = true
                                                 }
                                                 launchSingleTop = true

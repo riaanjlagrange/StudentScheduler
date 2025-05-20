@@ -16,7 +16,7 @@ import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedback.Fee
 import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedbackchatlist.FeedbackChatListScreen
 
 @Composable
-fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
+fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
     NavHost(navController, startDestination = "role_select", modifier = modifier) {
         composable("role_select") {
             RoleSelectScreen(navController)

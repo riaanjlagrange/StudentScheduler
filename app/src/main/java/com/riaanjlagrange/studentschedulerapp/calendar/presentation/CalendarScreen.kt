@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.calendar.presentation.CalendarViewModel
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
-import io.github.boguszpawlowski.composecalendar.StaticCalendar
 
 @Composable
 fun CalendarScreen(

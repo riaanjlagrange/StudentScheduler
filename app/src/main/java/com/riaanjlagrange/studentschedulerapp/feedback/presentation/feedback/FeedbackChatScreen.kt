@@ -1,6 +1,8 @@
 package com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedback
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -90,31 +92,33 @@ fun FeedbackChatScreen(
             }
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(8.dp),
+        Column (modifier = Modifier
+            .padding(innerPadding)
+            .padding(10.dp)
         ) {
             Row (
-              verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(state.selectedUser?.name ?: "...", style = MaterialTheme.typography.titleLarge)
-                Spacer(Modifier.width(8.dp))
+                Column {
+                    Text(state.selectedUser?.name ?: "...", style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        state.selectedUser?.email ?: "...",
+                        fontSize = 16.sp,
+                        color = Color.Gray
+                    )
+                }
                 Text(
                     state.selectedUser?.role?.name ?: "...",
                     color = Color.White,
                     fontSize = 18.sp,
                     modifier = Modifier
-                        .padding(5.dp)
-                        .clip(RoundedCornerShape(4.dp))
+                        .clip(RoundedCornerShape(8.dp))
                         .background(roleLabelColor)
+                        .padding(5.dp)
                 )
             }
-            Text(
-                state.selectedUser?.email ?: "...",
-                fontSize = 16.sp,
-                color = Color.Gray
-            )
             HorizontalDivider(modifier = Modifier.padding(4.dp), thickness = 2.dp, color = PrimaryStudent)
             Spacer(Modifier.height(8.dp))
 

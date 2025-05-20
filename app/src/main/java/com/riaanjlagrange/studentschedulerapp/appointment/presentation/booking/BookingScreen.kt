@@ -68,7 +68,7 @@ fun BookingScreen(
         // Time slot dropdown
         TimeSlotDropdown(
             selectedTime = state.appointment.time,
-            timeSlots = listOf("09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "03:00 PM"),
+            timeSlots = listOf("8:00AM", "9:00AM", "10:00AM", "11:00AM", "12:00PM", "1:00PM", "2:00PM", "3:00PM", "4:00PM"),
             onTimeSelected = { viewModel.updateTime(it) }
         )
 
