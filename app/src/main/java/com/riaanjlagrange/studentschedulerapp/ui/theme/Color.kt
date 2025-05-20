@@ -16,6 +16,7 @@ val Pink80 = Color(0xFFEFB8C8)
 val PurplePrimary = Color(0xFF6750A4)
 val PurplePrimaryVariant = Color(0xFF494685)
 val OnPrimary = Color(0xFFFFFFFF)
+val softPrimary = Color(0xFFDDDBEA)
 
 // Secondary colors
 val Secondary = Color(0xFF625B71)
