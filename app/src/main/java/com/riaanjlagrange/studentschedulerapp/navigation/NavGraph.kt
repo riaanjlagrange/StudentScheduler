@@ -1,6 +1,8 @@
 package com.riaanjlagrange.studentschedulerapp.navigation
 
 import CalendarScreen
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -32,22 +34,65 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
             RegisterScreen(navController)
         }
 
-        composable("booking/{role}") { backStackEntry ->
+        composable(
+            route = "booking/{role}",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    tween(1000)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    tween(1000)
+                )
+            }
+        ) { backStackEntry ->
             val roleString = backStackEntry.arguments?.getString("role") ?: "student"
             val selectedRole = UserRole.valueOf(roleString)
             BookingScreen(navController, selectedRole)
         }
 
 
-        composable("view_bookings") {
+        composable(
+            route = "view_bookings",
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    tween(1000)
+                )
+            }
+        ) {
             ViewBookingsScreen(navController)
         }
 
-        composable("view_feedback") {
+        composable(
+            route = "view_feedback",
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down
+                )
+            }
+        ) {
             FeedbackChatListScreen(navController)
         }
 
-        composable("feedback_chat/{receiverId}") { backStackEntry ->
+        composable(
+            route = "feedback_chat/{receiverId}",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    tween(1000)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    tween(1000)
+                )
+            }
+        ) { backStackEntry ->
             val receiverId = backStackEntry.arguments?.getString("receiverId") ?: ""
             FeedbackChatScreen(navController, receiverId)
         }

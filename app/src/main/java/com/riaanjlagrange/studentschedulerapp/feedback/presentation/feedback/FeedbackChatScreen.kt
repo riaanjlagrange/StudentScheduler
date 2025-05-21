@@ -31,6 +31,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -123,13 +124,23 @@ fun FeedbackChatScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column {
-                    Text(state.selectedUser?.name ?: "...", style = MaterialTheme.typography.titleLarge)
-                    Text(
-                        state.selectedUser?.email ?: "...",
-                        fontSize = 16.sp,
-                        color = Color.Gray
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.AccountCircle,
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
                     )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(state.selectedUser?.name ?: "...", style = MaterialTheme.typography.titleLarge)
+                        Text(
+                            state.selectedUser?.email ?: "...",
+                            fontSize = 16.sp,
+                            color = Color.Gray
+                        )
+                    }
                 }
                 Text(
                     state.selectedUser?.role?.name ?: "...",
@@ -163,7 +174,6 @@ fun FeedbackChatScreen(
                 Column(
                     modifier = Modifier.background(softPrimary).padding(12.dp)
                 ) {
-                    Spacer(Modifier.height(8.dp))
                     if (state.isLoading) {
                         CircularProgressIndicator()
                     } else {

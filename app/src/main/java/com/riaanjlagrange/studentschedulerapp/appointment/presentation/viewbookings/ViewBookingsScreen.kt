@@ -23,11 +23,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components.BookingItem
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,8 +78,8 @@ fun ViewBookingsScreen(
                     isRefreshing = false
                     refreshState.animateToHidden()
                 }
-            })
-        {
+            }
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
