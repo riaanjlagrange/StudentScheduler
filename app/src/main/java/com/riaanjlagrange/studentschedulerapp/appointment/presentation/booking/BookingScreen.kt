@@ -25,6 +25,7 @@ import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.c
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.TimeSlotDropdown
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.booking.components.UserSelectorDropdown
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import com.riaanjlagrange.studentschedulerapp.notification.BookingNotificationService
 import com.riaanjlagrange.studentschedulerapp.utils.components.ErrorText
 import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import kotlinx.coroutines.delay
@@ -37,6 +38,8 @@ fun BookingScreen(
 ) {
     val context = LocalContext.current
     val state = viewModel.state
+
+    val service = BookingNotificationService(context)
 
     val role = selectedRole
 
@@ -92,6 +95,7 @@ fun BookingScreen(
                     }
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     if (success) {
+                        service.showBookingNotification(viewModel.state.appointment)
                         navController.navigate("view_bookings") {
                             popUpTo(0)
                         }
