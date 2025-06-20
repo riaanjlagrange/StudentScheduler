@@ -51,8 +51,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
+import com.riaanjlagrange.studentschedulerapp.notification.BookingNotificationService
 import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryLecturer
 import com.riaanjlagrange.studentschedulerapp.ui.theme.PrimaryStudent
 import com.riaanjlagrange.studentschedulerapp.ui.theme.PurplePrimaryVariant
@@ -73,6 +75,7 @@ fun FeedbackChatScreen(
         else -> PurplePrimaryVariant
     }
 
+    val notificationService = BookingNotificationService(LocalContext.current)
 
     // Load users and messages once
     LaunchedEffect(receiverId) {
@@ -110,6 +113,7 @@ fun FeedbackChatScreen(
                         .size(30.dp)
                         .clickable {
                             viewModel.sendMessage(receiverId)
+                            notificationService.showFeedbackNotification("Your feedback has been sent!")
                             viewModel.setMessage("")
                         }
                 )

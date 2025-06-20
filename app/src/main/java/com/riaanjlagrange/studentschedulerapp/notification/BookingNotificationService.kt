@@ -34,7 +34,28 @@ class BookingNotificationService(
             notification
         )
     }
+
+    fun showFeedbackNotification(message: String) {
+        val activityIntent = Intent(context, MainActivity::class.java)
+        val activityPendingIntent = PendingIntent.getActivity(
+            context,
+            2,
+            activityIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        val notification = NotificationCompat.Builder(context, FEEDBACK_CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_message_24)
+            .setContentTitle("Feedback Sent")
+            .setContentText(message)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .setContentIntent(activityPendingIntent)
+            .build()
+
+        notificationManager.notify(2, notification)
+    }
+
     companion object {
         const val BOOKING_CHANNEL_ID = "booking_channel"
+        const val FEEDBACK_CHANNEL_ID = "feedback_channel"
     }
 }
