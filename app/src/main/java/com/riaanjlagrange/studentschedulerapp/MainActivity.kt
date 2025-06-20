@@ -157,7 +157,7 @@ class MainActivity : ComponentActivity() {
                                             unselectedIconColor = Color.Gray,
                                             selectedTextColor = Color.Blue,
                                             unselectedTextColor = Color.Gray,
-                                            indicatorColor = Color(0xFFE3F2FD)
+                                            indicatorColor = Color.Transparent
 
                                         ),
                                         onClick = {
