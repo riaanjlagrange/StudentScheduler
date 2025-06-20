@@ -25,7 +25,6 @@ fun RoleSelectScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize().padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // check if user is alreayd logged in
         val user = FirebaseAuth.getInstance().currentUser
         LaunchedEffect(user) {
             if (user != null) {

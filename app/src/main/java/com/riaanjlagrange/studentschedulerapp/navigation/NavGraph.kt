@@ -14,6 +14,7 @@ import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.login.LoginScreen
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.register.RegisterScreen
 import com.riaanjlagrange.studentschedulerapp.auth.presentation.role.RoleSelectScreen
+import com.riaanjlagrange.studentschedulerapp.dashboard.DashboardScreen
 import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedback.FeedbackChatScreen
 import com.riaanjlagrange.studentschedulerapp.feedback.presentation.feedbackchatlist.FeedbackChatListScreen
 
@@ -103,7 +104,7 @@ fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable("dashboard") {
-            // DashboardScreen(navController)
+            DashboardScreen(navController)
         }
 
     }

@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -14,33 +17,24 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.google.firebase.FirebaseApp
-import com.riaanjlagrange.studentschedulerapp.navigation.AppNavGraph
-import com.riaanjlagrange.studentschedulerapp.navigation.BottomNav
-import com.riaanjlagrange.studentschedulerapp.ui.theme.StudentSchedulerAppTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.riaanjlagrange.studentschedulerapp.ui.theme.Background
+import com.riaanjlagrange.studentschedulerapp.navigation.AppNavGraph
+import com.riaanjlagrange.studentschedulerapp.navigation.BottomNav
 import com.riaanjlagrange.studentschedulerapp.ui.theme.PurplePrimaryVariant
-import com.riaanjlagrange.studentschedulerapp.ui.theme.Secondary
+import com.riaanjlagrange.studentschedulerapp.ui.theme.StudentSchedulerAppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -57,8 +51,8 @@ class MainActivity : ComponentActivity() {
         }
 
         FirebaseApp.initializeApp(this)
-
         enableEdgeToEdge()
+
         setContent {
             StudentSchedulerAppTheme {
                 val navController = rememberNavController()
@@ -71,12 +65,12 @@ class MainActivity : ComponentActivity() {
                     BottomNav.Calender
                 )
                 val shouldShowBottomBar = bottomBarScreens.any { it.route == currentRoute }
+
                 Scaffold(
                     topBar = {
                         TopAppBar(
                             title = {
                                 Text(
-                                    // Set title of top bar
                                     text = when {
                                         currentRoute?.startsWith("login") == true -> "Login"
                                         currentRoute?.startsWith("register") == true -> "Register"
@@ -87,12 +81,10 @@ class MainActivity : ComponentActivity() {
                                         currentRoute?.startsWith("calendar") == true -> "My Calendar"
                                         else -> "Stadio Scheduler"
                                     },
-                                    // set color of title
                                     color = Color.White
                                 )
                             },
                             navigationIcon = {
-                                // checks when the back button should appear
                                 if (navController.previousBackStackEntry != null) {
                                     IconButton(onClick = { navController.popBackStack() }) {
                                         Icon(
@@ -105,23 +97,24 @@ class MainActivity : ComponentActivity() {
                             },
                             actions = {
                                 if (currentRoute != null) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ){
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
                                         Text(
                                             text = "Switch Role",
                                             modifier = Modifier
                                                 .clickable {
                                                     FirebaseAuth.getInstance().signOut()
-
                                                     navController.navigate("role_select") {
-                                                        popUpTo(0) { inclusive = true } // clears backstack
+                                                        popUpTo(0) { inclusive = true }
                                                     }
                                                 }
                                                 .padding(10.dp),
                                             color = Color.White
                                         )
-                                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = Color.White)
+                                        Icon(
+                                            Icons.AutoMirrored.Filled.ExitToApp,
+                                            contentDescription = "Logout",
+                                            tint = Color.White
+                                        )
                                     }
                                 }
                             },
@@ -130,12 +123,9 @@ class MainActivity : ComponentActivity() {
                             )
                         )
                     },
-
                     bottomBar = {
                         if (shouldShowBottomBar) {
-                            NavigationBar(
-                                containerColor = PurplePrimaryVariant
-                            ) {
+                            NavigationBar(containerColor = PurplePrimaryVariant) {
                                 bottomBarScreens.forEach { screen ->
                                     NavigationBarItem(
                                         icon = {
@@ -146,10 +136,12 @@ class MainActivity : ComponentActivity() {
                                                 "Calendar" -> Icon(Icons.Default.DateRange, contentDescription = null, tint = Color.White)
                                             }
                                         },
-                                        label = { Text(
-                                            text = screen.title,
-                                            color = Color.White
-                                        ) },
+                                        label = {
+                                            Text(
+                                                text = screen.title,
+                                                color = Color.White
+                                            )
+                                        },
                                         alwaysShowLabel = true,
                                         selected = currentRoute == screen.route,
                                         colors = NavigationBarItemDefaults.colors(
@@ -158,29 +150,37 @@ class MainActivity : ComponentActivity() {
                                             selectedTextColor = Color.Blue,
                                             unselectedTextColor = Color.Gray,
                                             indicatorColor = Color.Transparent
-
                                         ),
                                         onClick = {
                                             navController.navigate(screen.route) {
-                                                popUpTo(0) {
-                                                    saveState = true
-                                                }
+                                                popUpTo(0) { saveState = true }
                                                 launchSingleTop = true
                                                 restoreState = true
                                             }
-                                        },
+                                        }
                                     )
                                 }
                             }
                         }
                     }
                 ) { paddingValues ->
-                    AppNavGraph(
-                        navController = navController,
-                        modifier = Modifier.padding(paddingValues)
-                    )
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.schedulerbg),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                        AppNavGraph(
+                            navController = navController,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
-            }
+        }
     }
 }

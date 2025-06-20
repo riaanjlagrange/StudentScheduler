@@ -1,27 +1,20 @@
 package com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,7 +22,6 @@ import androidx.navigation.NavController
 import com.riaanjlagrange.studentschedulerapp.R
 import com.riaanjlagrange.studentschedulerapp.appointment.presentation.viewbookings.components.BookingItem
 import com.riaanjlagrange.studentschedulerapp.auth.domain.model.UserRole
-import com.riaanjlagrange.studentschedulerapp.utils.components.Header
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,11 +53,8 @@ fun ViewBookingsScreen(
             }
         }
     ) {
-
         val refreshState = rememberPullToRefreshState()
-        var isRefreshing by remember {
-            mutableStateOf(false)
-        }
+        var isRefreshing by remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
 
         PullToRefreshBox(
@@ -80,28 +69,47 @@ fun ViewBookingsScreen(
                 }
             }
         ) {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                // Loading
-                if (state.isLoading) {
-                    CircularProgressIndicator()
-                }
-                // Error
-                else if (state.error != null) {
-                    Text(text = state.error)
-                }
-                // No appointments
-                else if (state.appointments.isEmpty()) {
-                    Text(text = stringResource(R.string.no_appointments_found))
-                }
-                // Show list
-                else {
-                    LazyColumn {
-                        items(state.appointments) { appointment ->
-                            // checks if user is a lecturer or not. and displays differently depending on it
-                            BookingItem(appointment, role)
+                Image(
+                    painter = painterResource(id = R.drawable.schedulerbg),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    when {
+                        state.isLoading -> {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                        }
+
+                        state.error != null -> {
+                            Text(
+                                text = state.error,
+                                color = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
+
+                        state.appointments.isEmpty() -> {
+                            Text(
+                                text = stringResource(R.string.no_appointments_found),
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
+
+                        else -> {
+                            LazyColumn {
+                                items(state.appointments) { appointment ->
+                                    BookingItem(appointment, role)
+                                }
+                            }
                         }
                     }
                 }
@@ -109,5 +117,3 @@ fun ViewBookingsScreen(
         }
     }
 }
-
-//TODO: add preview

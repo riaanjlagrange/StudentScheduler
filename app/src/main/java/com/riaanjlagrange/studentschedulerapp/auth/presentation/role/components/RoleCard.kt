@@ -67,6 +67,7 @@ fun RoleCard(navController: NavController, role: String) {
                     strokeWidth = strokeWidth
                 )
             }
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
