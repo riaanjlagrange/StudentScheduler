@@ -39,7 +39,7 @@ fun LoginScreen(
     val user = FirebaseAuth.getInstance().currentUser
     LaunchedEffect(user) {
         if (user != null) {
-            navController.navigate("view_bookings") {
+            navController.navigate("dashboard") {
                 popUpTo("login/${selectedRole.name}") { inclusive = true }
             }
         }
@@ -76,7 +76,7 @@ fun LoginScreen(
                     }
 
                     Toast.makeText(context, "Welcome ${user.role.name}", Toast.LENGTH_SHORT).show()
-                    navController.navigate("view_bookings") {
+                    navController.navigate("dashboard") {
                         popUpTo(0)
                         launchSingleTop = true
                     }

@@ -48,7 +48,7 @@ fun RegisterScreen(
         val user = FirebaseAuth.getInstance().currentUser
         LaunchedEffect(user) {
             if (user != null) {
-                navController.navigate("view_bookings") {
+                navController.navigate("dashboard") {
                     popUpTo("register") { inclusive = true }
                 }
             }

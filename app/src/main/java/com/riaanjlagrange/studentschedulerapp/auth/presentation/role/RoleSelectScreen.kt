@@ -28,7 +28,7 @@ fun RoleSelectScreen(navController: NavController) {
         val user = FirebaseAuth.getInstance().currentUser
         LaunchedEffect(user) {
             if (user != null) {
-                navController.navigate("view_bookings") {
+                navController.navigate("dashboard") {
                     popUpTo("role_select") { inclusive = true }
                 }
             }

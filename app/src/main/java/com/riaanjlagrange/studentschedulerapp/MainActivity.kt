@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                                 if (currentRoute != null) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Text(
-                                            text = "Switch Role",
+                                            text = "Logout",
                                             modifier = Modifier
                                                 .clickable {
                                                     FirebaseAuth.getInstance().signOut()
